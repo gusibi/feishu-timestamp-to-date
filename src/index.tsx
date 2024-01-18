@@ -25,8 +25,10 @@ function LoadApp() {
             const tableName = await table.getName();
             setInfo(`The table Name is ${tableName}`);
             setAlertType('success');
-            const fieldMetaList = await table.getFieldMetaListByType<INumberFieldMeta>(FieldType.Currency);
-            setTsMetaList(fieldMetaList);
+            const numberFieldMetaList = await table.getFieldMetaListByType<INumberFieldMeta>(FieldType.Number);
+            setTsMetaList(numberFieldMetaList);
+            const dateFieldMetaList = await table.getFieldMetaListByType<IDateTimeFieldMeta>(FieldType.DateTime);
+            setDateMetaList(dateFieldMetaList);
         };
         fn();
     }, []);
