@@ -60,7 +60,7 @@ function LoadApp() {
         const recordIdList = await table.getRecordIdList();
         for (const recordId of recordIdList) {
             const timestamp = await tsField.getValue(recordId);
-            setInfo(`ts->>> $timestamp <<<----`);
+            setInfo(`ts->>>` + timestamp + `<<<----`);
             if (timestamp == 0) {
                 continue
             }
