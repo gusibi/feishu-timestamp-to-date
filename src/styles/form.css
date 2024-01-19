@@ -8,23 +8,20 @@ div {
 /* 下拉选择框样式 */
 .select-field {
     width: 100%;
-    /* padding: 12px 20px; */
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
-    /* box-sizing: border-box; */
 }
 
 /* 按钮样式 */
 .button {
-    width: 100px;
-    height: 30px;
-    padding: 5px;
-    background-color: #007bff;
-    color: #fff;
+    width: 100%;
+    background-color: #0069d9;
+    color: white;
+    margin: 8px 0;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
