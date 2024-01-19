@@ -61,11 +61,11 @@ function LoadApp() {
         for (const recordId of recordIdList) {
             const timestamp = await tsField.getValue(recordId);
             setInfo(`ts->>>` + timestamp + `<<<----`);
-            if (timestamp == 0) {
+            if (timestamp === null) {
                 continue
             }
             await dateField.setValue(recordId, timestamp);
-            await dateField.setDisplayTimeZone(true);
+            // await dateField.setDisplayTimeZone(true);
             await dateField.setDateFormat(dateFormat);
         }
         // setInfo(`全部转换完成!!!`);
