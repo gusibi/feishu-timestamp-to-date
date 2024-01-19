@@ -19,15 +19,12 @@ function LoadApp() {
     const [dateFieldMetaList, setDateMetaList] = useState<IDateTimeFieldMeta[]>([])
     const [selectTsFieldId, setSelectTsFieldId] = useState<string>();
     const [selectDateFieldId, setSelectDateFieldId] = useState<string>();
-    const [selectTimezone, setTimezone] = useState<string>();
+    // const [selectTimezone, setTimezone] = useState<string>();
     const [selectDateFormat, setDateFormat] = useState<DateFormatter>();
 
     useEffect(() => {
         const fn = async () => {
             const table = await bitable.base.getActiveTable();
-            // const tableName = await table.getName();
-            // setInfo(`The table Name is ${tableName}`);
-            // setAlertType('success');
             const numberFieldMetaList = await table.getFieldMetaListByType<INumberFieldMeta>(FieldType.Number);
             setTsMetaList(numberFieldMetaList);
             const dateFieldMetaList = await table.getFieldMetaListByType<IDateTimeFieldMeta>(FieldType.DateTime);
@@ -43,13 +40,11 @@ function LoadApp() {
     const formatDateFieldMetaList = (metaList: IDateTimeFieldMeta[]) => {
         return metaList.map(meta => ({ label: meta.name, value: meta.id }));
     };
+    const defaultDateFormat = DateFormatter.DATE_TIME;
 
 
     const transform = async () => {
-        if (!selectDateFormat) {
-            setDateFormat(DateFormatter.DATE_TIME);
-        }
-        if (!selectTsFieldId || !selectDateFieldId || !selectDateFormat) {
+        if (!selectTsFieldId || !selectDateFieldId) {
             setInfo(`时间戳字段和目标日期字段都是必传字段!!!`);
             setAlertType('error');
             return;
@@ -66,8 +61,17 @@ function LoadApp() {
             }
             await dateField.setValue(recordId, timestamp);
             await dateField.setDisplayTimeZone(true);
-            await dateField.setDateFormat(selectDateFormat);
+            if (!selectDateFormat) {
+                await dateField.setDateFormat(defaultDateFormat);
+            } else {
+                await dateField.setDateFormat(selectDateFormat);
+
+            }
         }
+        table.setField(selectDateFieldId, {
+            name: await dateField.getName(),
+            type: FieldType.DateTime,
+        });
         setInfo(`全部转换完成!!!`);
         setAlertType('success');
     }
