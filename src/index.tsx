@@ -44,6 +44,10 @@ function LoadApp() {
 
 
     const transform = async () => {
+        var dateFormat = defaultDateFormat;
+        if (selectDateFormat) {
+            dateFormat = selectDateFormat;
+        }
         if (!selectTsFieldId || !selectDateFieldId) {
             setInfo(`时间戳字段和目标日期字段都是必传字段!!!`);
             setAlertType('error');
@@ -61,16 +65,14 @@ function LoadApp() {
             }
             await dateField.setValue(recordId, timestamp);
             await dateField.setDisplayTimeZone(true);
-            if (!selectDateFormat) {
-                await dateField.setDateFormat(defaultDateFormat);
-            } else {
-                await dateField.setDateFormat(selectDateFormat);
-
-            }
+            await dateField.setDateFormat(dateFormat);
         }
         table.setField(selectDateFieldId, {
             name: await dateField.getName(),
             type: FieldType.DateTime,
+            property: {
+                dateFormat: dateFormat,
+            }
         });
         setInfo(`全部转换完成!!!`);
         setAlertType('success');
@@ -78,22 +80,20 @@ function LoadApp() {
 
     return <div>
         <Alert message={info} type={alertType} />
-        <div style={{ margin: 10 }}>
-            <div>选择时间戳字段</div>
-            <Select style={{ width: 120 }} onSelect={setSelectTsFieldId} options={formatTsFieldMetaList(timestampFieldMetaList)} />
+        <div>
+            <div>
+                <div className="input-label">选择时间戳字段</div>
+                <Select className="select-field" onSelect={setSelectTsFieldId} options={formatTsFieldMetaList(timestampFieldMetaList)} />
+            </div>
+            <div>
+                <div className="input-label">选择目标时间字段</div>
+                <Select className="select-field" onSelect={setSelectDateFieldId} options={formatDateFieldMetaList(dateFieldMetaList)} />
+            </div>
+            <div >
+                <div className="input-label">选择时间格式</div>
+                <Select className="select-field" options={DATEFORMAT} onSelect={setDateFormat} defaultValue={defaultDateFormat} />
+            </div>
+            <Button className="button" onClick={transform}>转换</Button>
         </div>
-        <div style={{ margin: 10 }}>
-            <div>选择目标时间字段</div>
-            <Select style={{ width: 120 }} onSelect={setSelectDateFieldId} options={formatDateFieldMetaList(dateFieldMetaList)} />
-        </div>
-        {/* <div style={{ margin: 10 }}>
-            <div>选择时区</div>
-            <Select options={TIMEZONE} style={{ width: 120 }} onSelect={setTimezone} />
-        </div> */}
-        <div style={{ margin: 10 }}>
-            <div>选择时间格式</div>
-            <Select options={DATEFORMAT} style={{ width: 120 }} onSelect={setDateFormat} />
-        </div>
-        <Button style={{ marginLeft: 10 }} onClick={transform}>转换</Button>
     </div>
 }
