@@ -1,4 +1,4 @@
-import { CurrencyCode } from '@lark-base-open/js-sdk';
+import { DateFormatter } from '@lark-base-open/js-sdk';
 
 export const TIMEZONE = [
     {
@@ -105,4 +105,14 @@ export const TIMEZONE = [
         "value": "UTC+12:00",
         "label": "Pacific/Fiji"
     }
+];
+
+export const DATEFORMAT = [
+    { value: DateFormatter.DATE_YMD_WITH_SLASH, label: "yyyy/MM/dd" },
+    { value: DateFormatter.DATE_TIME, label: "yyyy/MM/dd HH:mm" },
+    { value: DateFormatter.DATE_TIME_WITH_HYPHEN, label: "yyyy-MM-dd HH:mm" },
+    { value: DateFormatter.DATE_YMD_WITH_HYPHEN, label: "yyyy-MM-dd" },
+    { value: DateFormatter.DATE_MD_WITH_HYPHEN, label: "MM-dd" },
+    { value: DateFormatter.DATE_MMDD_WITH_SLASH, label: "MM/dd/yyyy" },
+    { value: DateFormatter.DATE_DDMM_WITH_SLASH, label: "dd/MM/yyyy" }
 ];
