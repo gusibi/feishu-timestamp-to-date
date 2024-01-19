@@ -60,6 +60,7 @@ function LoadApp() {
         const recordIdList = await table.getRecordIdList();
         for (const recordId of recordIdList) {
             const timestamp = await tsField.getValue(recordId);
+            setInfo(`ts->>> $timestamp <<<----`);
             if (timestamp == 0) {
                 continue
             }
@@ -67,14 +68,7 @@ function LoadApp() {
             await dateField.setDisplayTimeZone(true);
             await dateField.setDateFormat(dateFormat);
         }
-        table.setField(selectDateFieldId, {
-            name: await dateField.getName(),
-            type: FieldType.DateTime,
-            property: {
-                dateFormat: dateFormat,
-            }
-        });
-        setInfo(`全部转换完成!!!`);
+        // setInfo(`全部转换完成!!!`);
         setAlertType('success');
     }
 
