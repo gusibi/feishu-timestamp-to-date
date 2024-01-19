@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { bitable, FieldType, INumberField, INumberFieldMeta, IDateTimeField, IDateTimeFieldMeta, DateFormatter } from '@lark-base-open/js-sdk';
-import { Alert, AlertProps, Button, Select } from 'antd';
+import { Alert, AlertProps, Button, Checkbox, Select } from 'antd';
 import { TIMEZONE, DATEFORMAT } from './const';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -13,13 +13,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 
 function LoadApp() {
-    const [info, setInfo] = useState('请选择您要转换的字段');
+    const [info, setInfo] = useState('请选择您要转换的字段' + Date.now());
     const [alertType, setAlertType] = useState<AlertProps['type']>('info');
     const [timestampFieldMetaList, setTsMetaList] = useState<INumberFieldMeta[]>([])
     const [dateFieldMetaList, setDateMetaList] = useState<IDateTimeFieldMeta[]>([])
     const [selectTsFieldId, setSelectTsFieldId] = useState<string>();
     const [selectDateFieldId, setSelectDateFieldId] = useState<string>();
-    // const [selectTimezone, setTimezone] = useState<string>();
+    const [selectMillisecond, setMillisecond] = useState<false>();
     const [selectDateFormat, setDateFormat] = useState<DateFormatter>();
 
     useEffect(() => {
@@ -32,6 +32,11 @@ function LoadApp() {
         };
         fn();
     }, []);
+
+    const onChange = (e) => {
+        setMillisecond(e.target.checked);
+
+    };
 
     const formatTsFieldMetaList = (metaList: INumberFieldMeta[]) => {
         return metaList.map(meta => ({ label: meta.name, value: meta.id }));
@@ -59,16 +64,18 @@ function LoadApp() {
 
         const recordIdList = await table.getRecordIdList();
         for (const recordId of recordIdList) {
-            const timestamp = await tsField.getValue(recordId);
-            setInfo(`ts->>>` + timestamp + `<<<----`);
+            var timestamp = await tsField.getValue(recordId);
             if (timestamp === null) {
                 continue
             }
+            if (selectMillisecond) {
+                timestamp = timestamp * 1000
+            }
+            setInfo(`ts->>>` + timestamp + `<<<----`);
             await dateField.setValue(recordId, timestamp);
-            // await dateField.setDisplayTimeZone(true);
             await dateField.setDateFormat(dateFormat);
         }
-        // setInfo(`全部转换完成!!!`);
+        setInfo(`全部转换完成!!!`);
         setAlertType('success');
     }
 
@@ -78,6 +85,9 @@ function LoadApp() {
             <div>
                 <div className="input-label">选择时间戳字段</div>
                 <Select className="select-field" onSelect={setSelectTsFieldId} options={formatTsFieldMetaList(timestampFieldMetaList)} />
+                <Checkbox onChange={onChange} checked={selectMillisecond}  >
+                    毫秒
+                </Checkbox>
             </div>
             <div>
                 <div className="input-label">选择目标时间字段</div>
