@@ -68,10 +68,9 @@ function LoadApp() {
             if (timestamp === null) {
                 continue
             }
-            if (selectMillisecond) {
+            if (!selectMillisecond) {
                 timestamp = timestamp * 1000
             }
-            setInfo(`ts->>>` + timestamp + `<<<----`);
             await dateField.setValue(recordId, timestamp);
             await dateField.setDateFormat(dateFormat);
         }
