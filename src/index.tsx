@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 
 function LoadApp() {
-    const [info, setInfo] = useState('请选择您要转换的字段' + Date.now());
+    const [info, setInfo] = useState('请选择您要转换的字段');
     const [alertType, setAlertType] = useState<AlertProps['type']>('info');
     const [timestampFieldMetaList, setTsMetaList] = useState<INumberFieldMeta[]>([])
     const [dateFieldMetaList, setDateMetaList] = useState<IDateTimeFieldMeta[]>([])
